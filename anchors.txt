@@ -1,0 +1,3 @@
+Best Accuracy = 52.55%
+Best Anchors = [[46.0, 80.89]]
+Best Ratios = [0.57]
