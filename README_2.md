@@ -1,5 +1,5 @@
-# yolov5-5.0
-可用的yoloV5 5.0模型
+# yolov5-3.0
+可用的yoloV5 .0模型，从rockchip官方仓库中下载
 
 由于依赖的版本问题，在原代码的基础上修改了部分代码内容，按照requirements.txt进行安装依赖后已经能够正常运行。
 
@@ -12,6 +12,6 @@ rename.py 能够对图片进行批量重命名 在样本标注前按照统一规
 train.py 进行训练，训练之前需要修改data/xx.yaml、models/yaml文件，以及选择weights中的初始权重文件
 detect.py 进行预测
 
-经过测试，当前的代码转成的onnx模型，不能转换为rknn模型
+经过测试，当前的代码转成的onnx模型，可以转换为rknn模型
 
 
