@@ -52,11 +52,58 @@ def butter_lowpass_filtfilt(data, cutoff=1500, fs=50000, order=5):
     return filtfilt(b, a, data)  # forward-backward filter
 
 
-def plot_one_box(x, img, color=None, label=None, line_thickness=None):
+# def plot_one_box(x, img, color=None, label=None, line_thickness=None):
+#     # Plots one bounding box on image img
+#     tl = line_thickness or round(0.002 * (img.shape[0] + img.shape[1]) / 2) + 1  # line/font thickness
+#     color = color or [random.randint(0, 255) for _ in range(3)]
+#     c1, c2 = (int(x[0]), int(x[1])), (int(x[2]), int(x[3]))
+#     cv2.rectangle(img, c1, c2, color, thickness=tl, lineType=cv2.LINE_AA)
+#     if label:
+#         tf = max(tl - 1, 1)  # font thickness
+#         t_size = cv2.getTextSize(label, 0, fontScale=tl / 3, thickness=tf)[0]
+#         c2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
+#         cv2.rectangle(img, c1, c2, color, -1, cv2.LINE_AA)  # filled
+#         cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
+
+def plot_one_box(x, img, color=None, label=None, line_thickness=None, name=None):
     # Plots one bounding box on image img
+    # 在plot_one_box中添加了name参数
     tl = line_thickness or round(0.002 * (img.shape[0] + img.shape[1]) / 2) + 1  # line/font thickness
     color = color or [random.randint(0, 255) for _ in range(3)]
     c1, c2 = (int(x[0]), int(x[1])), (int(x[2]), int(x[3]))
+
+    #-----------------------以距离计算
+    midx = (int(x[0])+int(x[2]))/2
+    midy = (int(x[1])+int(x[3]))/2
+    dx = midx - 640
+    dy = midy - 480
+    dis2 =math.sqrt(dx**2 + dy**2)
+    dis ='near'
+    if name =='face':
+        # label = label + f' {dis2:.2f}' #测距使用
+        if dis2 <160:
+            dis ='near'
+        if (dis2 >=160) and (dis2 < 300):
+            dis ='medium'
+        if dis2 >= 300:
+            dis ='far'
+        label = label + f' {dis}'
+
+    # #-----------------以面积计算
+    # w = int(x[2]) - int(x[0])       # 框的宽
+    # h = int(x[3]) - int(x[1])     # 框的高
+    # area = w * h
+    # dis = 'near'
+    # # 针对当前分辨率设置的 面积阈值
+    # if name =='face':
+    #     if area< 4000:
+    #         dis ='far'
+    #     if (area >=4000) and (area <8000):
+    #         dis = 'medium'
+    #     if area >8000:
+    #         dis = 'near'
+    #     label =label +f' {dis}'
+
     cv2.rectangle(img, c1, c2, color, thickness=tl, lineType=cv2.LINE_AA)
     if label:
         tf = max(tl - 1, 1)  # font thickness
